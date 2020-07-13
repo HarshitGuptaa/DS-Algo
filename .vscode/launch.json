@@ -1,0 +1,16 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - factorial",
+            "request": "launch",
+            "mainClass": "factorial"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - basic",
+            "request": "launch",
+            "mainClass": "basic"
+        }
+    ]
+}
