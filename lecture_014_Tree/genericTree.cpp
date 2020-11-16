@@ -263,16 +263,17 @@ int main(int args,char**argv){
 
     Node* node = createTree(arr);
     display(node);
+    cout<<size(node);
     // vector<Node*>ans = nodeToRootPath(node,80);
     // for(Node* n:ans){
     //     cout<<n->data<<" ";
     // }
 
-    vector<Node*>path;
-    nodeToRootPath_(node,80,path);
-    for(Node* n:path){
-        cout<<n->data<<" ";
-    }
+    // vector<Node*>path;
+    // nodeToRootPath_(node,80,path);
+    // for(Node* n:path){
+    //     cout<<n->data<<" ";
+    // }
     //kFar(node,30,2);
     //linearize(node);
     //display(node);

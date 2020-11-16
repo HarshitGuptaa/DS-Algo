@@ -302,7 +302,6 @@ void reverseList(){
         Node *curr2 = prev;
         Node *curr1 = head;
 
-        
         while(curr2 !=NULL){
         Node *cn1 = curr1->next;
         Node *cn2 = curr2->next;

@@ -62,6 +62,24 @@ unordered_set<string> map;
         return ans;
     }
 
+
+
+int subset(vector<int>&arr,int tar,int idx,int sum){
+    if(idx==arr.size()){
+    if(sum==0) return 1;
+    return 0;
+    }
+
+    int count=0;
+
+    count+= subset(arr,tar,idx+1,sum+arr[idx]);
+    count+= subset(arr,tar,idx+1,sum);
+
+    return count;
+}
+
+
+
     int main(){
         // int n;
         // cin>>n;
@@ -70,7 +88,10 @@ unordered_set<string> map;
         //     cin>>
 
         // }
-        cout<<maxPrime(4);
+       // cout<<maxPrime(4);
+       vector<int> arr = {1,2,1,2};
+       cout<<subset(arr,0,0,0);
+       //cout<<combiWthoutRepe(arr,0,0,"");
         return 0;
     }
 
@@ -85,3 +106,5 @@ unordered_set<string> map;
     //     return 0;
     // }
     
+
+

@@ -298,7 +298,7 @@ class BSTIterator {
             idx++;
         }
 
-        int tnel = idx - ppsi + 1; // total no of elements between isi and idx
+        int tnel = idx - ppsi + 1; // total no of elements in left sub tree
 
         node.left = ConstructFromPreAndPost(pre, psi + 1, psi + tnel, post, ppsi, idx);
         node.right = ConstructFromPreAndPost(pre, psi + tnel + 1, pei, post, idx + 1, ppei - 1);

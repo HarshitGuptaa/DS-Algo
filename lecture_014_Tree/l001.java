@@ -21,6 +21,9 @@ public class l001{
 
         }        
     }
+
+//till BST this is normal binary tree
+
     static int idx=0;
     public static Node createTree(int []arr) {
         if(idx==arr.length || arr[idx]==-1){
@@ -206,7 +209,7 @@ public class l001{
         return (node.left == null?rs:node.right==null?ls:Math.max(ls, rs))+node.data;
     }
 
-    public static int leaftoLeafMaxSum_02(Node node){
+    public static int leaftoLeafMaxSum_02(Node node){ //bettr way than above
         if(node==null) return 0;
 
         int leftnodeToLeafSum = leaftoLeafMaxSum_02(node.left);
@@ -238,6 +241,7 @@ public class l001{
         if(node==null){
             return ;
         }
+        
         prefSum+=node.data;
         ans+=map.getOrDefault(prefSum-target,0); //only gives how many answers are there in tree
 
@@ -250,7 +254,23 @@ public class l001{
 
     } 
 
-    //camera requirement
+//prac
+    // public static void pathsum(Node node,int target,int prefSum, HashMap<Integer,Integer> map){
+    //     if(node==null) return;
+
+    //     prefSum+= node.data;
+    //     ans+=map.getOrDefault(prefSum-target,0);
+    //     map.put(prefSum,map.getOrDefault(prefSum,0)+1);
+
+    //     pathsum(node.left,target,prefSum,map);
+    //     pathsum(node.right,target,prefSum,map);
+    
+    //     map.put(prefSum,map.getOrDefault(prefSum,0)-1);
+    
+    // }
+
+
+    //camera requirement- leet-968
     // -1: need a camera
     //  0:  im a camera
     //  1:  no need of camera
@@ -483,24 +503,24 @@ public class l001{
          
         }
 
-
+// bst const below difficult- diag in 2nd dp copy
 //bst construction from preorder array , only bst constr poss from 1 type of iteration 
-    static int i = 0;
-    public static Node constructTreeFromPreOrder(ArrayList<Integer> preOrder, int lb, int ele, int rb)
-    {
-        if (ele < lb || ele > rb || i == preOrder.size())
-            return null;
+    // static int i = 0;
+    // public static Node constructTreeFromPreOrder(ArrayList<Integer> preOrder, int lb, int ele, int rb)
+    // {
+    //     if (ele < lb || ele > rb || i == preOrder.size())
+    //         return null;
     
-        Node node = new Node(ele);
-        i++;
+    //     Node node = new Node(ele);
+    //     i++;
     
-        if (i < preOrder.size())
-            node.left = constructTreeFromPreOrder(preOrder, lb, preOrder.get(i), ele);
-        if (i < preOrder.size())
-            node.right = constructTreeFromPreOrder(preOrder, ele, preOrder.get(i), rb);
+    //     if (i < preOrder.size())
+    //         node.left = constructTreeFromPreOrder(preOrder, lb, preOrder.get(i), ele);
+    //     if (i < preOrder.size())
+    //         node.right = constructTreeFromPreOrder(preOrder, ele, preOrder.get(i), rb);
     
-        return node;
-    }
+    //     return node;
+    // }
     
     public static Node constructTreeFromPreOrder_02(ArrayList<Integer>preOrder, int lb, int rb)
     {
@@ -515,6 +535,7 @@ public class l001{
         return node;
     }
     
+    // same as construction just height returned
     public static int heightOfBSTPreorder(ArrayList<Integer>preOrder, int lb, int rb)
     {
         if (idx == preOrder.size() || preOrder.get(i) < lb || preOrder.get(i) > rb)
@@ -533,6 +554,7 @@ public class l001{
         return constructTreeFromPreOrder_02(preOrder,(int)-1e8 , (int)1e8);
     }
     
+    //add data remove data easy peasy
     public static Node addData(Node root, int data)
     {
         if (root == null)
@@ -544,29 +566,7 @@ public class l001{
     
         return root;
     }
-    
-    public static Node removeData(Node root, int data)
-    {
-        if (root == null)
-            return null;  // never found data;
-        
-        if (data < root.data)
-            root.left = removeData(root.left, data);
-        else if(data > root.data)
-            root.right = removeData(root.right, data);
-        else{  // data found.
-          
-           if(root.left == null || root.right == null) 
-           return root.left!=null?root.left:root.right;
-           
-           int maxInleft=maximumEle(root.left);
-           root.data=maxInleft;
-           root.left=removeData(root.left,maxInleft);
-        
-        }
-        return root;
-    }
-    
+
     public static Node addDataItr(Node root, int data)
     {
         if(root==null) return new Node(data);
@@ -585,40 +585,31 @@ public class l001{
         else prev.right=new Node(data);
         return root;
     }
-
-
-
-//my method of addData iterative
-
-    // public static void addNode(Node root,Node node){
-                
-    //     Node curr = root;
-        
-    //     while(node.data<curr.data && curr.left!=null){
-    //         curr=curr.left;
-    //     }
-    //     while(node.data>curr.data && curr.right!=null){
-    //         curr=curr.right;
-    //     }
-        
-    //     if(node.data<curr.data) curr.left=node;
-    //     else curr.right=node;
-
-        
-        
-    // }    
-    // //itrative
-    // public static Node addData(Node root,int val){
-    //     Node node = new Node(val);
-    //     if(root==null) return node;
-
-    //     addNode(root, node);
-    //     return root;
-    // }
-
-
-
     
+    public static Node removeData(Node root, int data)
+    {
+        if (root == null)
+            return null;  // never found data;
+        
+        if (data < root.data)
+            root.left = removeData(root.left, data);
+        else if(data > root.data)
+            root.right = removeData(root.right, data);
+        else{  // data found.
+          
+           if(root.left == null || root.right == null) return root.left!=null?root.left:root.right;
+           
+           int maxInleft=maximumEle(root.left); //if both left right present
+           root.data=maxInleft;
+           root.left=removeData(root.left,maxInleft);
+        
+        }
+        return root;
+    }
+    
+   
+
+
 
     //bst end
     //======================================================================
@@ -769,7 +760,7 @@ public class l001{
 
     //best method
     public static void lineWiseLevelOrder(Node node) {
-        LinkedList<Node> que = new LinkedList<>();
+        LinkedList<Node> que = new LinkedList<>(); //can also use inbuilt que
         que.addLast(node);
 
         int level = 0;
@@ -1087,6 +1078,7 @@ public static class tpair{  //traversalPair
     }
 }
 
+//preorder
 public static void ItrTraversalOfTree(Node node){
     Stack<tpair> st=new Stack<>();
     st.push(new tpair(node,false,false,false));
@@ -1154,8 +1146,9 @@ public static void ItrHeightOfTree(Node node){
         }else {
             rpair=st.pop();
             if(st.size()!=0){
-                if(st.peek().isleft)
-                    st.peek().ld=rpair.sd;
+                if(st.peek().isleft)  //if the removed node was on left of its parent,
+                                        //parent ld = child sd,like this value of height 
+                    st.peek().ld=rpair.sd; //travels to the top node
                 else 
                    st.peek().rd=rpair.sd;
             }
@@ -1220,7 +1213,7 @@ public static void morrisPreOrder(Node node){
 }
 
 
-//bt/bst const when 2 iterations are given like pre,inorder    
+//bt/bst construction when 2 iterations are given like pre,inorder    
 
 // psi = preStartIndex, pei=preEndIndex, isi=inStartIndex, iei=inEndIndex
 public static Node ConstructFromPreAndIn(int[] pre,int psi,int pei,int[] in,int isi,int iei){
@@ -1249,10 +1242,10 @@ public static Node ConstructFromPreAndIn(int[] pre, int[] in) {
 public static Node ConstructFromPostAndIn(int[] post,int psi,int pei,int[] in,int isi,int iei){
     if(psi>pei || isi>iei) return null;
 
-    Node node=new Node(pre[pei]);
+    Node node=new Node(post[pei]);
     
     int idx=isi;
-    while(in[idx]!=pre[psi]){
+    while(in[idx]!=post[psi]){
       idx++;
     }
     int tnel=idx-isi;  // total no of elements between isi and idx
@@ -1268,22 +1261,26 @@ public static Node ConstructFromPostAndIn(int[] post, int[] in) {
 }
 
 // psi = preStartIndex, pei=preEndIndex, ppsi=postStartIndex, ppei=postEndIndex
-public static Node ConstructFromPreAndPost(int[] post,int psi,int pei,int[] in,int ppsi,int ppei){
-    if(psi>pei || ppsi>ppei) return null;
+public TreeNode ConstructFromPreAndPost(int[] pre, int psi, int pei, int[] post, int ppsi, int ppei) {
+    if (psi > pei || ppsi > ppei) return null;
 
-    Node node=new Node(pre[psi]);
-        
-    int idx=ppsi;
-    while(post[idx]!=pre[psi+1]){
+    if (ppsi == ppei) {
+        return new TreeNode(post[ppsi]);
+    }
+
+    TreeNode node = new TreeNode(pre[psi]);
+
+    int idx = ppsi;
+    while (post[idx] != pre[psi + 1]) {
         idx++;
     }
-    
-    int tnel=idx-isi+1;  // total no of elements between isi and idx
 
-    node.left=ConstructFromPreAndPost(post,psi+1,psi+tnel,in,ppsi,idx);
-    node.right=ConstructFromPreAndPost(post,psi+tnel+1,pei,in,idx+1,iei-1);
-        
-    return  node;
+    int tnel = idx - ppsi + 1; // total no of elements in left sub tree
+
+    node.left = ConstructFromPreAndPost(pre, psi + 1, psi + tnel, post, ppsi, idx);
+    node.right = ConstructFromPreAndPost(pre, psi + tnel + 1, pei, post, idx + 1, ppei - 1);
+
+    return node;
 }
 
 public static Node ConstructFromPreAndPost(int[] pre, int[] post) {

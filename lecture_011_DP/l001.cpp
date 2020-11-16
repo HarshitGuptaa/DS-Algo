@@ -321,7 +321,8 @@ int boardPath_02_giveOutcomes(int end, vector<int> &outcomes, vector<int> &dp){
 //leetcode 746
 
 //0 push backed in cost array 
-int minCostClimbingStairs_01(int n, vector<int> &cost, vector<int> &dp)
+//min 2 elts present
+int minCostClimbingStairs_01(int n, vector<int> &cost, vector<int> &dp) //n acts as index, cost[3]=0 in 10 15 20 exmpl
 {
     if (n <= 1)
         return cost[n];
@@ -423,8 +424,8 @@ void set1(){
     vii dp(n+1,vi(n+1,0));
     //cout<<mazePathHV_02(0,0,2,2,dp);
     //cout<<mazePathHV_03(n,n,dp);
-    // cout<<mazePathMulti(0,0,2,2)<<endl;
-    cout<<mazePathMulti_01(0,0,2,2,dp)<<endl;
+     cout<<mazePathMulti(0,0,2,2)<<endl;
+   // cout<<mazePathMulti_01(0,0,2,2,dp)<<endl;
     //cout<<mazePathMulti_02(2,2,dp);
      
 
@@ -438,7 +439,7 @@ void set1(){
     //vi cost={10,15,20};
     //cout<<minCostClimbingStairs(cost);
     //display(dp);
-    display2(dp);
+    //display2(dp);
 
 }
 
@@ -485,7 +486,7 @@ int pairAndSingleUp_02(int n,vi &dp){
     }
         int count=0;
     
-        if(dp[i]!=0) return dp[i];
+    //    if(dp[i]!=0) return dp[i];
 
         count+=dp[i-1]; //single
         count+=(i-1)*dp[i-2]; //pair   apply for loop here if print ans too
@@ -532,6 +533,9 @@ int minJump(int idx,vector<int>&arr,vector<int>&dp){
     dp[idx] = minAns;
     return minAns;
 }
+
+//inn ques m bs pehli recur call tak ka answer socho aage ka recursion le ayega
+//for above and below ques
 
 //tabulation  from last as observed from dp array
 int minJump_01(int idx,vector<int>&arr,vector<int>&dp){
@@ -628,8 +632,8 @@ int parti_02(int n,int k,vii&dp){
     return dp[n][k]; 
 }
 
+//inn ques m bs pehli recur call tak ka answer socho aage ka recursion le ayega
 
-//leet 64.====================================================
 
 //gold mine
 vii dirArr = {{0, 1}, {-1, 1}, {1, 1}};
@@ -638,16 +642,16 @@ int goldMine_01(int x, int y, vii &arr, vii &dp)
     if (y == arr[0].size() - 1)
     {
         dp[x][y] = arr[x][y];
-        return arr[x][y];
+        return arr[x][y];   //last col m to vahi cell hoga ans
     }
 
     if (dp[x][y] != 0)
         return dp[x][y];
 
     int maxAns = -1e6;
-    for (int d = 0; d < 3; d++)
-    {
-        int r = x + dirArr[d][0];
+    for (int d = 0; d < 3; d++)    //1st col se 3 call lgai or sbse apna max ans mangwa liya
+    {                           //max ans mai apne 1st col ka add krkr return kr diya
+        int r = x + dirArr[d][0]; 
         int c = y + dirArr[d][1];
 
         if (r >= 0 && c >= 0 && r < arr.size() && c < arr[0].size())
@@ -715,29 +719,27 @@ void goldMine()
 //===========================================
 //maximum size square submatrix with all 1's
 
-//memo
+//memo - this not fully right
 int maxSquare=0;
 
-int maxSubMat(int x,int y, vii &arr,vii&dp){
-    if(x==arr.size() || y==arr[0].size()){
-        // if(arr[x][y]==1){
-        //     return 1;
-        // }else{
-            return 0;
-        // }
+int maxSubMat_01(int x,int y, vii &arr,vii&dp){
+    if(x<1 || y<1){
+        return dp[x][y] = arr[x][y];
     }
 
     int minPossSquare = 0;
 
     if(dp[x][y]!=-1) return dp[x][y];
 
-    int right =  maxSubMat( x, y+1, arr,dp);
-    int diag = maxSubMat( x+1, y+1, arr,dp);
-    int down = maxSubMat( x+1, y, arr,dp);
+    int left =  maxSubMat_01( x, y-1, arr,dp);
+    int diag = maxSubMat_01( x-1, y-1, arr,dp);
+    int up = maxSubMat_01( x-1, y, arr,dp);
 
-    if (arr[x][y]==1)
+    if (arr[x][y]==1)  //it checks for above,left and nw, if they have 1 then it is a square
     {
-        minPossSquare=min(min(right,diag),down)+1;
+        minPossSquare=min(min(left,diag),up)+1;
+    }else{
+        dp[x][y]=0;
     }
     
     maxSquare = max(maxSquare,minPossSquare);
@@ -745,34 +747,48 @@ int maxSubMat(int x,int y, vii &arr,vii&dp){
     return maxSquare;
 }
 
-//tabu
-//correct this
-int maxSubMat_01( vii &arr,vii&dp){
-    
-    int n=arr.size()-1;
-    int m = arr[0].size()-1;
-    int maxSquare=0;
-    
-    for(int x=n;x>=0;x--){
-        for(int y=m;y>=0;y--){
 
-            int right =  dp[x][y+1];
-            int diag = dp[x+1][y+1];
-            int down = dp[x+1][y];
-
-            if (arr[x][y]==1){
-                dp[x][y]=min(min(right,diag),down)+1;
-            }else{
-                dp[x][y]=0;
-            }    
-            maxSquare = max(maxSquare,dp[x][y]);
+//tabu- dp sol is much better to understand of for loop
+int maximalSquare(vector<vector<char>>& matrix) {
+        if(matrix.size()==0)return 0;//if empty return 0
+        
+        int n=matrix.size();
+        int m=matrix[0].size();
+        
+        int dp[n][m];//creating a 2d array 
+        
+        for(int i=0;i<m;i++){
+            dp[0][i]=matrix[0][i]-'0';//copy first row from original array
         }
+        for(int i=0;i<n;i++){
+            dp[i][0]=matrix[i][0]-'0';//copy first col from original array
+        }
+        for(int i=1;i<n;i++){
+            for(int j=1;j<m;j++){
+                if(matrix[i][j]=='1'){//if char is 1 then
+                    //add 1+min from up(i-1,j),left(i,j-1),top(i-1,j-1)
+                    dp[i][j]=min(dp[i-1][j],min(dp[i-1][j-1],dp[i][j-1])) + 1;
+                }
+                else{//if 0 keep it as 0 in dp array
+                    dp[i][j]=0;
+                }
+            }
+        }
+        int maxi=dp[0][0];//find the maximum element from the dp which is our side of largest square
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(dp[i][j]>maxi){
+                    maxi=dp[i][j];
+                }
+            }
+        }
+        //return the area  side*side
+        return maxi*maxi;
     }
-    return maxSquare;
-}
 
 
 //tile floor n X m
+//https://www.geeksforgeeks.org/count-number-ways-tile-floor-size-n-x-m-using-1-x-m-size-tiles/
 //memo
 int tileFloor(int n,int m,vi &dp){
     if(n<=m){
@@ -907,9 +923,9 @@ int coinChangeCombination_DP(vector<int> &arr, int tar, vector<int> &dp)
         if(dp[idx][target]!=0) return dp[idx][target];
 
         if(target-arr[idx]>=0)
-            count+=targetSum(target-arr[idx],idx+1,arr,dp);
+            count+=targetSum(target-arr[idx],idx+1,arr,dp); //coin use krne ki call
         
-        count+=targetSum(target,idx+1,arr,dp);
+        count+=targetSum(target,idx+1,arr,dp); //coin na use krne ki call
         return dp[idx][target]= count;
     }
 
@@ -1042,7 +1058,7 @@ void knapsack()
 bool canPartition_(vector<int> &nums, int n, int sum, vector<vector<int>> &dp)
 {
     if (sum == 0 || n == 0)
-    {
+    { 
         if (sum == 0)
             return dp[n][sum] = 1;
         return dp[n][sum] = 0;
@@ -1056,7 +1072,8 @@ bool canPartition_(vector<int> &nums, int n, int sum, vector<vector<int>> &dp)
         res = res || canPartition_(nums, n - 1, sum - nums[n - 1], dp) == 1;
     res = res || canPartition_(nums, n - 1, sum, dp) == 1;
 
-    return dp[n][sum] = res ? 1 : 0;
+    dp[n][sum] = res ? 1 : 0;
+    return res;
 }
 
 bool canPartition(vector<int> &nums)
@@ -1072,6 +1089,8 @@ bool canPartition(vector<int> &nums)
 
     return canPartition_(nums, nums.size(), sum, dp);
 }
+
+
 
 //===================================================================
 //stringSet =========================================================
@@ -1184,6 +1203,54 @@ int LongestPlaindromeSubsequence(string str,vii &dp){
        return dp[0][str.length()-1];
 }
 
+
+//Geeks: https://practice.geeksforgeeks.org/problems/count-palindromic-subsequences/1
+int countPS(string &s, int i, int j, vector<vector<int>> &dp)
+{
+    if (i > j)
+        return 0;
+    if (i == j)
+        return dp[i][j] = 1;
+    if (dp[i][j] != 0)
+        return dp[i][j];
+
+    int middleString = countPS(s, i + 1, j - 1, dp);
+    int excludingLast = countPS(s, i, j - 1, dp);
+    int excludingFirst = countPS(s, i + 1, j, dp);
+
+    int ans = excludingFirst + excludingLast;
+    return dp[i][j] = (s[i] == s[j]) ? ans + 1 : ans - middleString;
+}
+
+int countPS_DP(string &s, int i, int j, vector<vector<int>> &dp)
+{
+
+    int n = s.length();
+    for (int gap = 0; gap < n; gap++)
+    {
+        for (int i = 0, j = gap; j < n; j++, i++)
+        {
+            if (i == j)
+            {
+                dp[i][j] = 1;
+                continue;
+            }
+
+            int middleString = dp[i + 1][j - 1];
+            int excludingLast = dp[i][j - 1];
+            int excludingFirst = dp[i + 1][j];
+
+            int ans = excludingFirst + excludingLast;
+            dp[i][j] = (s[i] == s[j]) ? ans + 1 : ans - middleString;
+        }
+    }
+    return dp[0][n - 1];
+}
+
+
+
+
+
 //Leetcode 115 : distinct-subsequences.=========================================================
 int distinct_subsequences(string S, string T, int n, int m, vector<vector<int>> &dp)
 {
@@ -1257,50 +1324,6 @@ int numDistinct(string s, string t)
 
 
 
-//Geeks: https://practice.geeksforgeeks.org/problems/count-palindromic-subsequences/1
-int countPS(string &s, int i, int j, vector<vector<int>> &dp)
-{
-    if (i > j)
-        return 0;
-    if (i == j)
-        return dp[i][j] = 1;
-    if (dp[i][j] != 0)
-        return dp[i][j];
-
-    int middleString = countPS(s, i + 1, j - 1, dp);
-    int excludingLast = countPS(s, i, j - 1, dp);
-    int excludingFirst = countPS(s, i + 1, j, dp);
-
-    int ans = excludingFirst + excludingLast;
-    return dp[i][j] = (s[i] == s[j]) ? ans + 1 : ans - middleString;
-}
-
-int countPS_DP(string &s, int i, int j, vector<vector<int>> &dp)
-{
-
-    int n = s.length();
-    for (int gap = 0; gap < n; gap++)
-    {
-        for (int i = 0, j = gap; j < n; j++, i++)
-        {
-            if (i == j)
-            {
-                dp[i][j] = 1;
-                continue;
-            }
-
-            int middleString = dp[i + 1][j - 1];
-            int excludingLast = dp[i][j - 1];
-            int excludingFirst = dp[i + 1][j];
-
-            int ans = excludingFirst + excludingLast;
-            dp[i][j] = (s[i] == s[j]) ? ans + 1 : ans - middleString;
-        }
-    }
-    return dp[0][n - 1];
-}
-
-
 // Leetcode 1143.====================================================================
 int longestCommonSubsequence(string &text1, string &text2, int i, int j, vector<vector<int>> &dp)
 {
@@ -1338,6 +1361,8 @@ int longestCommonSubsequence_DP(string &text1, string &text2, int i, int j, vect
     }
     return dp[0][0];
 }
+
+//subseq mai exc first,exc last calls se bhi answer ata h,substring m kewal tabhi ata hai jab char match hojae
 
 int max_ = 0;
 int longestCommonSubstring(string &text1, string &text2, int i, int j, vector<vector<int>> &dp)
@@ -1396,7 +1421,6 @@ int longestCommonSubsequence(string text1, string text2)
 }
 
 
-
 //leet 1035.===========================================
 //based on longest common subseq
 
@@ -1423,8 +1447,6 @@ int maxUncrossedLines(vector<int> &A, vector<int> &B)
     return dp[0][0];
 }
 
-
-
 //leetcode 1458.
 int maxDotProduct_(int i,int j,vector<int>& nums1, vector<int>& nums2,vector<vector<int>>&dp) {
         if(i==nums1.size() || j==nums2.size()){
@@ -1432,16 +1454,15 @@ int maxDotProduct_(int i,int j,vector<int>& nums1, vector<int>& nums2,vector<vec
         }
         if(dp[i][j]!=0) return dp[i][j];
         
-        int val=nums1[i]*nums2[j];
-        int a=maxDotProduct_(i+1,j+1,nums1,nums2,dp) + val;
-        int b=maxDotProduct_(i,j+1,nums1,nums2,dp);
+        int val=nums1[i]*nums2[j];   //vahi 2 value max h
+        int a=maxDotProduct_(i+1,j+1,nums1,nums2,dp) + val;  //ye 2 sahi h or baki bache se kro
+        int b=maxDotProduct_(i,j+1,nums1,nums2,dp); //inn dono ka nhi jamm raha,ek ko aage krkr fir compare kro
         int c=maxDotProduct_(i+1,j,nums1,nums2,dp);
         
         int ans=max(max(a,b),max(c,val));
         
         return dp[i][j]=ans;
     }
-
 
 int maxDotProduct(vector<int> &nums1, vector<int> &nums2)
 {
@@ -1489,6 +1510,8 @@ int minDistance(string &word1, string &word2, int n, int m, vector<vector<int>> 
 
     return dp[n][m] = min(min(insert_, replace_), delete_);
 }
+
+
 
 
 
@@ -1817,7 +1840,7 @@ int OBST(vi&freq,vi&arr,int si,int ei,vii&dp){ // mcm: O(n^3) * sumInRange: O(n)
     for(int cut=si;cut<=ei;cut++){
         int left =(cut==si)?0:OBST(freq,arr,si,cut-1,dp);
         int right = (cut==ei)?0:OBST(freq,arr,cut+1,ei,dp);
-        int myCost = left + sumInRange(freq,si,ei);  + right;
+        int myCost = left + sumInRange(freq,si,ei) + right;
         minAns=min(myCost,minAns);
     }
     return dp[si][ei] = minAns;
@@ -1983,7 +2006,7 @@ int numDecodings_(string &s, int vidx, vector<int> &dp)
 }
 
 //gfg
-int AiBjCk(string str)
+int AiBjCk(string str) //learn
 {
     int Acount = 0;
     int Bcount = 0;
@@ -2119,8 +2142,8 @@ void cutType(){
 }
 
 int main(){
-    //set1();
-    set2();
+    set1();
+    //set2();
     //stringSet();
     //LIS();
     //cutType();

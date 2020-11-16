@@ -541,7 +541,7 @@ int col=0,diag=0,adiag=0;
 
 //================================================================//
 //SUDOKU
-
+//submit sudoku online once
 vi row(9,0);
 vi col(9,0);
 vvi mat(3,vi(3,0));
@@ -751,6 +751,7 @@ void sudoku(){
 
 //================================================================//
 //CROSSWORD
+// - means empty space
 
 vector<vector<char>> board = {
     {'+', '-', '+', '+', '+', '+', '+', '+', '+', '+'},
@@ -772,7 +773,7 @@ bool isSafePWH(int x,int y,string word){
     
     for(int i=0;i<word.size();i++){
         if((y+i)<board[0].size() && board[x][y+i] != '-' && board[x][y+i]!=word[i]){
-            return false;
+            return false; //word ka letter bhi ni h vaha,and '-' bhi ni h means '+' hai that means not safe
         } 
     }
     return true;
@@ -866,8 +867,13 @@ void crossW()
     vector<string> words = {"agra", "norway", "england", "gwalior"};
     cout << crossword(words, 0) << endl;
 }
+
+
+
+
 //=================================================================//
 //=============================wordBreak==========================
+//leet 139,140
 unordered_set<string> map;
 int wordBreak_(string str,string ans){
     if(str.length()==0){

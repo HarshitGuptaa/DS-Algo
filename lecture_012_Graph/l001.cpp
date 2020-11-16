@@ -1070,10 +1070,10 @@ int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int
 
 
 //Bellman-Ford Algo
-void bellmanFord(vector<vector<int>> graph, int src)
+void bellmanFord(vector<vector<int>> &graph, int src)
 {
     int INF = 1e8;
-    vector<vector<int>> dp(graph.size(), vector<int>(graph.size() + 1), INF);
+    vector<vector<int>> dp( graph.size(), vector<int>(graph.size() + 1, INF));
     dp[src][0] = 0;
     bool isNegativeCycle = false;
 
