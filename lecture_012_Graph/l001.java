@@ -322,7 +322,7 @@ public static void primsAlgo(int src)
 	pq.add(new pair_(src,-1,0,0));
 
 	while(pq.size()!=0){
-		int size=pq.size();
+		int size=pq.size(); 
 
 		while(size-- > 0){
 			pair_ rvtx = pq.poll();

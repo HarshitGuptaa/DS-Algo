@@ -78,33 +78,91 @@ int subset(vector<int>&arr,int tar,int idx,int sum){
     return count;
 }
 
+    int power(long long x, unsigned int y, int p){
+        int res = 1;
 
+        x = x % p;
+        if(x==0) return 0;
 
-    int main(){
-        // int n;
-        // cin>>n;
-
-        // while(n-->0){
-        //     cin>>
-
-        // }
-       // cout<<maxPrime(4);
-       vector<int> arr = {1,2,1,2};
-       cout<<subset(arr,0,0,0);
-       //cout<<combiWthoutRepe(arr,0,0,"");
-        return 0;
+        while(y>0){
+            if(y&1) res = (res*x) % p;
+            y = y>>1;
+            x = (x*x) % p;
+        }
+        return res;
     }
 
-    // int main(int argc, char const *argv[])
-    // {
-    //     /* code */
+    // int main(){
+    //     int t;
+    //     cin>>t;
+    //     while(t--){
+    //         char a[3][3];
+    //         int countx=0,counto=0,winx=0,wino=0,count_=0;
+    //         for(int i=0;i<3;i++){
+    //             for(int j=0;j<3;j++){
+    //                 cin>>a[i][j];
+    //                 if(a[i][j]=='X') countx++;
+    //                 else if(a[i][j]=='O') counto++;
+    //                 else if(a[i][j]=='_') count_++;
+    //             }
+    //         }
 
+    //         for(int i=0;i<3;i++){
+    //             if(a[i][0]==a[i][1] and a[i][2]==a[i][1]){
+    //                 if(a[i][0]=='X') winx++;
+    //                 else if(a[i][0]=='O') wino++;
+    //             }
+    //         }
 
-    //     for(auto & e:findAnagrams("cbaebabacd","abc")){
-    //         cout<<e<<endl;
+    //         for(int i=0;i<3;i++){
+    //             if(a[0][i]==a[1][i] and a[2][i]==a[1][i]){
+    //                 if(a[0][i]=='X') winx++;
+    //                 else if(a[0][i]=='O') wino++;
+    //             }
+    //         }
+
+    //         if(a[0][0]==a[1][1] and a[2][2]==a[1][1]){
+    //             if(a[1][1]=='X') winx++;
+    //             else if(a[1][1]=='O') wino++;
+    //         }
+
+    //         if(a[0][2]==a[1][1] and a[2][0]==a[1][1]){
+    //             if(a[1][1]=='X') winx++;
+    //             else if(a[1][1]=='O') wino++;
+    //         }
+
+    //         if(counto > countx) cout<<3<<endl;
+    //         else if(countx - counto > 1) cout<<3<<endl;
+    //         else if((countx > counto) and winx==1 and wino==0) cout<<1<<endl;
+    //         else if((countx == counto) and wino==1 and winx==0) cout<<1<<endl;
+    //         else if(count_==0 and (winx+wino==0)) cout<<1<<endl;
+    //         else if(count_==0 and winx==2) cout<<1<<endl;
+    //         else if(count_>0 and (winx+wino==0)) cout<<2<<endl;
+    //         else cout<<3<<endl;
     //     }
     //     return 0;
     // }
-    
+
+    int combiWthoutRepe(int arr[],int idx,int n, string ans){
+    if(idx==n-1){
+        cout<<ans<<endl;
+        return 1;
+    }
+    int count = 0;
+    for(int i=idx;i<n;i++){
+        // if(target-arr[i]>=0){
+            count+=combiWthoutRepe(arr,i,n,ans+to_string(arr[i])+" ");
+        // }
+    }
+    return count;
+}
+
+    int main(){
+        
+        int arr[4]={1,2,3,4};
+        cout<<combiWthoutRepe(arr,0,4,"");
+        return 0;
+    }
+
 
 

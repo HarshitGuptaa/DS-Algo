@@ -1,52 +1,67 @@
 import java.util.*;
 public class ass{
 
-    public static void main (String[] args) throws java.lang.Exception
+    public static void main (String[] args) 
 	{
-	    // 	Scanner scn = new Scanner(System.in);
-		// int t = scn.nextInt();
+	    Scanner scn = new Scanner(System.in);
+		int []arr = new int[]{1,2,3,4};
+		System.out.println( permuteHelper(arr,0) ); 		
 
-		// for (int i = 1; i <= t; i++) {
-
-		// 	int n = scn.nextInt();
-		// 	int x = scn.nextInt();
-		// 	int y = scn.nextInt();
-		// 	int k = scn.nextInt();
-		// 	boolean[] arr = new boolean[n];
-			
-		// 	Arrays.fill(arr, false);
-		// 	int idx = x;
-			
-		// 	System.out.println(covid(n,x,y,k,arr,idx));
-		// }
-			int []arr = {1,3,2,-3};
-		System.out.println(subset(arr,0,0,0));
 	}
-	
-	// public static boolean covid(int n,int x,int y,int k,boolean []arr,int idx){
-    //     if(x==y) return true;
-    //     if(x==idx) return false;
-	    
-	//     arr[x]=true;
-	    
-	// 	boolean res = false;
-	// 	res = res || covid(n,(x+k)%n,y,k,arr,idx);
-	// 	return res;
-	// }
-	
-	public static int subset(int []arr,int tar,int idx,int sum){
-		if(idx==arr.length){
-		if(sum==tar) return 1;
-		return 0;
+
+	private static int permuteHelper(int[] arr, int index){
+		if(index >= arr.length - 1){ //If we are at the last element - nothing left to permute
+			//System.out.println(Arrays.toString(arr));
+			//Print the array
+			System.out.print("[");
+			for(int i = 0; i < arr.length - 1; i++){
+				System.out.print(arr[i] + ", ");
+			}
+			if(arr.length > 0) 
+				System.out.print(arr[arr.length - 1]);
+			System.out.println("]");
+			return 1;
 		}
-	
 		int count=0;
+		for(int i = index; i < arr.length; i++){ //For each index in the sub array arr[index...end]
 	
-		count+= subset(arr,tar,idx+1,sum+arr[idx]);
-		count+= subset(arr,tar,idx+1,sum);
+			//Swap the elements at indices index and i
+			int t = arr[index];
+			arr[index] = arr[i];
+			arr[i] = t;
 	
+			//Recurse on the sub array arr[index+1...end]
+			count+=permuteHelper(arr, index+1);
+	
+			//Swap the elements back
+			t = arr[index];
+			arr[index] = arr[i];
+			arr[i] = t;
+		}
 		return count;
 	}
+
+
+
+
+
+	// public static void func(int r,String [][]arr,String ans){
+		
+	// 	// if(r<3 && c<arr[r].length && arr[r][c]!="") ans+=arr[r][c];
+
+	// 	if(r==3){
+	// 		System.out.println(ans);
+	// 		return;
+	// 	}
+
+	// 	for(int i=0;i<arr[r].length;i++){
+	// 		// if (arr[r+1][i] != "" && r < 3) 
+	// 			func(r+1,arr,ans+arr[r][i]+" ");
+	// 	}
+
+
+	// }
+	
 	
 
 }

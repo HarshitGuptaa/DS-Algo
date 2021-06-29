@@ -198,8 +198,9 @@ void surroundedRegion(vector<vector<char>>&board){
     int n=board.size();
     int m=board[0].size();
 
+    //we r applying dfs on border 0's and marking them #
     for(int i=0;i<n;i++){
-        if(board[i][0]=='O') surroundedRegion_DFS(i,0,n,m,board);
+        if(board[i][0]=='O') surroundedRegion_DFS(i,0,n,m,board); 
         if(board[i][m-1]=='O') surroundedRegion_DFS(i,m-1,n,m,board);
     }
 
@@ -331,7 +332,7 @@ int islandPerimeter(vector<vector<int>> &board)
             }
         }
     }
-    return (4 * totalOnes - 2 * commonRegion);
+    return (4 * totalOnes - 2 * commonRegion);  //learn
 }
 
 
@@ -542,7 +543,7 @@ int orangesRotting(vector<vector<int>>& grid) {
     queue<int>que;
         for(int i=0;i<n;i++)
             for(int j=0;j<m;j++)
-                if(grid[i][j]==2){  
+                if(grid[i][j]==2){     //will apply bfs from all rotten
                     que.push(i*m +j);   
                 }
 
@@ -618,6 +619,11 @@ void isBipartite()
             cout << (boolalpha) << isBipartiteBFS(i, vis) << endl;
     }
 }
+
+
+
+
+
 
 //topological sort ques
 //leetcode 207============================================
@@ -729,6 +735,11 @@ int longestIncreasingPath(vector<vector<int>>& matrix) {
     }
     return length;
 }
+
+
+//union find
+
+
 
 
 //Kruskal Algo
@@ -1109,11 +1120,11 @@ void bellmanFord_1D(vector<vector<int>> &graph, int src)
         for (vector<int> &e : graph)
         {
             int u = e[0], v = e[1], w = e[2];
-            if (dp[u][i - 1] == INF)
+            if (dp[u] == INF)
                 continue;
-            int temp = dp[v][i];
+            int temp = dp[v];
             dp[v] = min(dp[v], dp[u] + w);
-            if (i == graph.size() && dp[v][i] != temp)
+            if (i == graph.size() && dp[v] != temp)
                 isNegativeCycle = true;
         }
     }

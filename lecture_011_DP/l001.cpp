@@ -829,10 +829,9 @@ int tileFloor_01(int n,int m,vi &dp){
 
 int coinChangePermutation(vector<int> &arr, int tar, vector<int> &dp)
 {
-    if (tar == 0)
-        return dp[tar] = 1;
-    if (dp[tar] != 0)
-        return dp[tar];
+    if (tar == 0) return dp[tar] = 1;
+    
+    if (dp[tar] != 0) return dp[tar];
 
     int count = 0;
     for (int ele : arr)
@@ -867,14 +866,14 @@ int coinChangeCombination_DP(vector<int> &arr, int tar, vector<int> &dp)
 }
 
 //leetcode 322  can be done by both combi/permu
-
+//like leet 45, basically we need to find the height of tree which is minimum
     //using permu 
     int minCoins(vector<int>&arr,int tar,vector<int>&dp){
         if(tar==0){
             //dp[tar]=0;
             return 0;
         }
-        if(dp[tar]!=0) return dp[tar];
+        if(dp[tar]!=1e8) return dp[tar];
         int minans = 1e8; 
         for(int i=0;i<arr.size();i++){
             if(tar-arr[i]>=0){
@@ -1094,6 +1093,44 @@ bool canPartition(vector<int> &nums)
 
 //===================================================================
 //stringSet =========================================================
+
+// public static boolean isPali(String str){
+//         int i=0;
+//         int j=str.length()-1;
+//         while(i<=j){
+//             char start = str.charAt(i);
+//             char end = str.charAt(j);
+//             if(start!=end){
+//                 return false;
+//             }
+//             i++;
+//             j--;
+//         }
+//         return true;
+//     }
+
+// 	public static void printAllSubstr(String str){
+// 		//write your code here
+		
+// 		for(int i=0;i<str.length();i++ ){
+// 		    for(int j=i+1;j<=str.length();j++){
+// 		        String s = str.substring(i,j);
+// 		        if(isPali(s)){ avoid this to simply print substrings
+// 		            System.out.println(s);
+// 		        }
+// 		    }
+// 		}
+		
+// 	}
+
+// auto speedup = [](){
+//     std::ios::sync_with_stdio(false);
+//     std::cin.tie(nullptr);
+//     std::cout.tie(nullptr);
+//     return nullptr;
+// }();
+
+
 vector<vector<bool>> isPlaindromeSubstring(string str)
 {
     int n = str.length();
